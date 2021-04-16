@@ -30,6 +30,6 @@ for activity in client.get_activities():
     time.sleep(9 * 2) #Rate limited to 100 requests every 15 minutes (1 request / 9 seconds)
 
 with open('all_data.json', 'w') as outfile:
-    json.dump(data, outfile)
+    json.dump(all_data, outfile)
 
 print('Wrote data to all_data.json')
