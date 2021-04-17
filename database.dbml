@@ -1,0 +1,27 @@
+Table StravaImports{
+  ID int [pk]
+  Name varchar(64)
+  Time varchar(max)
+  Distance varchar(max)
+  PositionData varchar(max)
+  Altitude varchar(max)
+  Velocity varchar(max)
+  HeartRate varchar(max)
+  Cadence varchar(max)
+  Watts varchar(max)
+  Temperature varchar(max)
+  Moving varchar(max)
+  SmoothGrade varchar(max)
+}
+
+Table RunSummary{
+  ID int [pk, increment]
+  Date datetime [not null]
+  Distance float [not null]
+  Time datetime [not null]
+  AverageHeartRate float
+  AveragePage datetime
+  RawStravaData int
+}
+
+Ref: RunSummary.RawStravaData > StravaImports.ID
