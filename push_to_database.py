@@ -53,7 +53,7 @@ for activity in client.get_activities():
         parser.parse("2021-04-16T" + str(activity.elapsed_time).replace(' ', 'T')),
         float(activity.distance),
         float(activity.average_speed),
-        float(activity.average_heartrate),
+        float(0 if activity.average_heartrate is None else activity.average_heartrate),
             
         get_json_value_or_default(streams, 'time'),
         get_json_value_or_default(streams, 'latlng'),
@@ -70,6 +70,7 @@ for activity in client.get_activities():
         conn.commit()
         print('Imported {}'.format(id))
 
-        time.sleep(9 * 2) #Rate limited to 100 requests every 15 minutes (1 request / 9 seconds)
     else:
         print('{} already exists'.format(id))
+    
+    time.sleep(9 * 2) #Rate limited to 100 requests every 15 minutes (1 request / 9 seconds)
