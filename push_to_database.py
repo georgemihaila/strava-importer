@@ -26,6 +26,10 @@ def send_wirepusher_notification(title, message, body = ""):
         url = "https://wirepusher.com/send?id="  + config['wirepusher']['id'] + '&title=' + title.replace(" ", "%20")  + '&message=' + message.replace(" ", "%20") + "&body=" + body.replace(" ", "%20") 
         requests.post(url, data = "")
 
+def recalculate_run_summaries():
+    if config['cce']['recalculate_after_import']:
+        requests.post(config['cce']['recalculation_url'], data = "")
+
 def get_json_value_or_default(entry, key):
     if key in entry.keys():
         return jsonpickle.encode(entry[key].data)
@@ -74,7 +78,9 @@ for activity in client.get_activities():
         )
         conn.commit()
         print('Imported {}'.format(id))
+
         send_wirepusher_notification('Strava importer', 'Imported activity {}'.format(id))
+        recalculate_run_summaries()
 
     else:
         print('{} already exists'.format(id))
