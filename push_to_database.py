@@ -1,5 +1,5 @@
 from stravalib.client import Client
-from requests import request
+import requests
 import csv
 import time
 import json
@@ -20,6 +20,11 @@ client.client_id = credentials['client_id']
 client.access_token = credentials['access_token']
 client.refresh_token = credentials['refresh_token']
 client.code = credentials['code']
+
+def send_wirepusher_notification(title, message, body = ""):
+    if config['wirepusher']['send_notification']:
+        url = "https://wirepusher.com/send?id="  + config['wirepusher']['id'] + '&title=' + title.replace(" ", "%20")  + '&message=' + message.replace(" ", "%20") + "&body=" + body.replace(" ", "%20") 
+        requests.post(url, data = "")
 
 def get_json_value_or_default(entry, key):
     if key in entry.keys():
@@ -69,6 +74,7 @@ for activity in client.get_activities():
         )
         conn.commit()
         print('Imported {}'.format(id))
+        send_wirepusher_notification('Strava importer', 'Imported activity {}'.format(id))
 
     else:
         print('{} already exists'.format(id))
