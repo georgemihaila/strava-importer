@@ -79,10 +79,12 @@ for activity in client.get_activities():
         conn.commit()
         print('Imported {}'.format(id))
 
-        send_wirepusher_notification('Strava importer', 'Imported activity {}'.format(id))
+        #send_wirepusher_notification('Strava importer', 'Imported activity {}'.format(id))
         recalculate_run_summaries()
 
     else:
         print('{} already exists'.format(id))
-    
+        if config['autoimportsettings']['quick_close']:
+            exit()
+
     time.sleep(9 * 2) #Rate limited to 100 requests every 15 minutes (1 request / 9 seconds)
